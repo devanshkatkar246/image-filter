@@ -41,11 +41,6 @@ export function DecorationSearch() {
   const [hasSearched, setHasSearched] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  const enhanceQuery = (rawQuery: string): string => {
-    const enhancement = 'decoration party setup balloons event design';
-    return `${rawQuery} ${enhancement}`.trim();
-  };
-
   const handleSearch = useCallback(async (searchQuery?: string) => {
     const finalQuery = searchQuery || query;
     if (!finalQuery.trim()) return;
@@ -58,11 +53,10 @@ export function DecorationSearch() {
     setTags([]);
 
     try {
-      const enhancedQuery = enhanceQuery(finalQuery);
       const response = await fetch(`${BACKEND_URL}/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: enhancedQuery }),
+        body: JSON.stringify({ text: finalQuery }),
       });
 
       if (!response.ok) throw new Error(`Search failed: ${response.statusText}`);
